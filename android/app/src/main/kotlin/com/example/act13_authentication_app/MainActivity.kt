@@ -1,4 +1,4 @@
-package com.example.act13_authentication_app
+package com.act13.authentication.firebase
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -18,34 +18,72 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Firebase Auth Demo',
-      home: Scaffold(
-        appBar: AppBar(title: Text('Firebase Auth Demo')),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          SignUpScreen(authService: _authService)),
-                );
-              },
-              child: Text('Register'),
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: Colors.black,
+        cardColor: Colors.grey[850],
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => HomeScreen(authService: _authService),
+      },
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  final AuthService authService;
+  HomeScreen({required this.authService});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Firebase Auth Demo'),
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Card(
+            margin: EdgeInsets.all(16.0),
+            color: Colors.grey[850],
+            child: Padding(
+              padding: EdgeInsets.all(32.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'Welcome to the App',
+                    style: TextStyle(fontSize: 24.0, color: Colors.white),
+                  ),
+                  SizedBox(height: 32.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              SignUpScreen(authService: authService),
+                        ),
+                      );
+                    },
+                    child: Text('Register'),
+                  ),
+                  SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              LoginScreen(authService: authService),
+                        ),
+                      );
+                    },
+                    child: Text('Login'),
+                  ),
+                ],
+              ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          LoginScreen(authService: _authService)),
-                );
-              },
-              child: Text('Login'),
-            ),
-          ],
+          ),
         ),
       ),
     );
