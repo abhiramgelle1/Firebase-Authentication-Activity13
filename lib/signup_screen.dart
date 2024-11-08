@@ -18,18 +18,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _signUp() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _message = "Processing registration...";
+      });
+
+      // Perform sign-up
       final user = await widget.authService.signUp(
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
+
       if (user != null) {
         setState(() {
           _message = 'Successfully registered ${user.email}';
         });
-        Navigator.pop(context); // Return to home after successful sign-up
+        Navigator.pop(context); // Go back or to login screen after success
       } else {
         setState(() {
-          _message = 'Registration failed';
+          _message = 'Registration failed. Please try again.';
         });
       }
     }
@@ -107,7 +113,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         padding: EdgeInsets.only(top: 16.0),
                         child: Text(
                           _message!,
-                          style: TextStyle(color: Colors.redAccent),
+                          style: TextStyle(
+                              color: _message!.contains('failed')
+                                  ? Colors.redAccent
+                                  : Colors.green),
                         ),
                       ),
                   ],

@@ -19,11 +19,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _message = "Processing login...";
+      });
+
       final user = await widget.authService.signIn(
         _emailController.text.trim(),
         _passwordController.text.trim(),
       );
+
       if (user != null) {
+        setState(() {
+          _message = 'Login successful for ${user.email}';
+        });
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -33,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       } else {
         setState(() {
-          _message = 'Login failed';
+          _message = 'Login failed. Please try again.';
         });
       }
     }
@@ -111,7 +119,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: EdgeInsets.only(top: 16.0),
                         child: Text(
                           _message!,
-                          style: TextStyle(color: Colors.redAccent),
+                          style: TextStyle(
+                              color: _message!.contains('failed')
+                                  ? Colors.redAccent
+                                  : Colors.green),
                         ),
                       ),
                   ],
